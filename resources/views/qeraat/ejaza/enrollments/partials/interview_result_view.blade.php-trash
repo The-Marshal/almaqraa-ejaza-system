@@ -1,0 +1,61 @@
+<div class="p-4" dir="rtl">
+    <div class="row g-4">
+        <div class="col-12 text-center mb-3">
+            <span class="badge {{ $statusClass }} p-3 fs-6 w-100 shadow-sm">
+                القرار النهائي: {{ $decisionText }}
+            </span>
+        </div>
+
+        <div class="col-md-7 border-start">
+            <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">إجابات أسئلة التجويد النظري:</h6>
+            <div class="list-group list-group-flush">
+                @for($i=1; $i<=5; $i++)
+                @php $q = "q{$i}_answer"; @endphp
+                <div class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+                    <span class="fw-bold">السؤال {{ $i }}</span>
+                    @if($result->$q == 'صح')
+                        <span class="text-success fw-bold"><i class="fas fa-check-circle"></i> صح</span>
+                    @elseif($result->$q == 'خطأ')
+                        <span class="text-danger fw-bold"><i class="fas fa-times-circle"></i> خطأ</span>
+                    @else
+                        <span class="text-muted small">غير محدد</span>
+                    @endif
+                </div>
+                @endfor
+            </div>
+            
+            <div class="mt-4 p-3 bg-light rounded border">
+                <h6 class="fw-bold small text-muted mb-2">ملاحظات المقابل:</h6>
+                <p class="mb-0 small italic">{{ $result->notes ?? 'لا توجد ملاحظات إضافية' }}</p>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">درجات التقييم المهارية:</h6>
+            
+            <div class="mb-4">
+                <label class="small text-muted d-block mb-1">مستوى التجويد</label>
+                <div class="progress" style="height: 10px;">
+                    <div class="progress-bar {{ $result->theory_level == 'excellent' ? 'bg-success' : ($result->theory_level == 'good' ? 'bg-info' : 'bg-warning') }}" 
+                         role="progressbar" style="width: {{ $result->theory_level == 'excellent' ? '100' : ($result->theory_level == 'good' ? '70' : '40') }}%"></div>
+                </div>
+                <small class="fw-bold">{{ $result->theory_level == 'excellent' ? 'ممتاز' : ($result->theory_level == 'good' ? 'جيد' : 'ضعيف') }}</small>
+            </div>
+
+            <div class="mb-4">
+                <label class="small text-muted d-block mb-1">مستوى التلاوة</label>
+                <div class="progress" style="height: 10px;">
+                    <div class="progress-bar {{ $result->reading_level == 'excellent' ? 'bg-success' : ($result->reading_level == 'good' ? 'bg-info' : 'bg-warning') }}" 
+                         role="progressbar" style="width: {{ $result->reading_level == 'excellent' ? '100' : ($result->reading_level == 'good' ? '70' : '40') }}%"></div>
+                </div>
+                <small class="fw-bold">{{ $result->reading_level == 'excellent' ? 'ممتاز' : ($result->reading_level == 'good' ? 'جيد' : 'ضعيف') }}</small>
+            </div>
+
+            <hr>
+            <div class="small">
+                <strong>التاريخ:</strong> {{ $result->interview_date }}<br>
+                <strong>اسم المقابل:</strong> {{ $result->interviewer_name ?? 'غير مسجل' }}
+            </div>
+        </div>
+    </div>
+</div>
